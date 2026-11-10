@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2f3f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1014" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="鲁班工作台">
+<title>鲁班工作台</title>
+<style>
+:root{
+  --bg:#f2f3f5; --card:#fff; --card2:#f7f8fa;
+  --text:#16181d; --text2:#6b7280; --text3:#9aa1ac;
+  --line:#e4e7eb; --line2:#eef0f3;
+  --shadow:0 1px 2px rgba(16,24,40,.05), 0 10px 28px -14px rgba(16,24,40,.20);
+  --shadow-h:0 2px 4px rgba(16,24,40,.06), 0 16px 36px -16px rgba(16,24,40,.26);
+  --radius:16px;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0e1014; --card:#171a20; --card2:#1d2129;
+    --text:#e9ebef; --text2:#9ba2ad; --text3:#6f7681;
+    --line:#282d36; --line2:#22262d;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -16px rgba(0,0,0,.7);
+    --shadow-h:0 2px 6px rgba(0,0,0,.5), 0 18px 40px -18px rgba(0,0,0,.8);
+  }
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{margin:0; padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+  min-height:100vh; min-height:100dvh;
+  display:flex; flex-direction:column;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.wrap{
+  width:100%; max-width:920px; margin:0 auto;
+  padding:34px 18px 0; flex:1 0 auto;
+  display:flex; flex-direction:column;
+}
+@media (max-width:760px){ .wrap{padding:22px 14px 0} }
+
+.head{display:flex; align-items:center; gap:13px; margin-bottom:8px}
+.logo{
+  width:42px; height:42px; flex:none; border-radius:12px;
+  background:var(--text); color:var(--card); display:grid; place-items:center;
+}
+.logo svg{width:24px; height:24px; display:block}
+h1{font-size:20px; font-weight:650; letter-spacing:-.3px; margin:0}
+.sub{font-size:12.5px; color:var(--text3); margin:2px 0 0}
+
+.grid{
+  margin-top:26px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(258px,1fr));
+  gap:13px;
+}
+@media (max-width:620px){ .grid{grid-template-columns:1fr; gap:11px} }
+
+.card{
+  display:flex; align-items:flex-start; gap:13px;
+  padding:16px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  text-decoration:none; color:inherit;
+  transition:transform .16s, box-shadow .16s, border-color .16s;
+}
+.card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-h); border-color:var(--text3) }
+.card:active{ transform:translateY(0) }
+
+.ic{
+  width:42px; height:42px; flex:none; border-radius:11px;
+  display:grid; place-items:center;
+  color:#fff;
+}
+.ic svg{width:22px; height:22px; display:block}
+.c1{background:#1a6ef5} .c2{background:#5b4bd6} .c3{background:#0e7490}
+.c4{background:#15803d} .c5{background:#c2410c} .c6{background:#7c3aed} .c7{background:#be185d}
+@media (prefers-color-scheme: dark){
+  .c1{background:#2563d9} .c2{background:#5a4bc9} .c3{background:#0b6076}
+  .c4{background:#15803d} .c5{background:#b03a0a} .c6{background:#6d31d4} .c7{background:#a7154f}
+}
+
+.body{flex:1; min-width:0}
+.card h2{font-size:14.5px; font-weight:650; margin:0 0 3px; letter-spacing:-.1px}
+.card p{font-size:12px; color:var(--text2); margin:0; line-height:1.55}
+.tags{display:flex; gap:5px; margin-top:8px; flex-wrap:wrap}
+.tag{
+  font-size:10px; font-weight:700; letter-spacing:.2px;
+  padding:2px 6px; border-radius:5px;
+  border:1px solid var(--line); color:var(--text3); background:var(--card2);
+}
+.tag.ok{color:#15803d; border-color:transparent; background:rgba(21,128,61,.09)}
+.tag.net{color:#b45309; border-color:transparent; background:rgba(180,83,9,.09)}
+@media (prefers-color-scheme: dark){
+  .tag.ok{color:#4ade80; background:rgba(74,222,128,.12)}
+  .tag.net{color:#f0a020; background:rgba(240,160,32,.12)}
+}
+
+.sect{
+  margin-top:26px; margin-bottom:11px;
+  font-size:11.5px; font-weight:700; letter-spacing:.6px;
+  color:var(--text3); text-transform:uppercase;
+}
+.sect:first-of-type{margin-top:24px}
+
+.foot{
+  margin-top:auto; padding:28px 0 calc(20px + env(safe-area-inset-bottom));
+  text-align:center; font-size:11.5px; color:var(--text3); line-height:1.9;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.8"/>
+        <rect x="14" y="3" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.8"/>
+        <rect x="3" y="14" width="7" height="7" rx="1.6" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M14 14h2.5v2.5H14zM18.5 14H21v2.5h-2.5zM14 18.5h2.5V21H14zM18.5 18.5H21V21h-2.5z" fill="currentColor"/>
+      </svg>
+    </div>
+    <div>
+      <h1>鲁班工作台</h1>
+      <p class="sub">自用小工具集合 · 轻量优先 · 数据不上传</p>
+    </div>
+  </header>
+
+  <div class="sect">本地工具</div>
+  <main class="grid">
+
+    <a class="card" href="https://luban-qr-code.app.workbuddy.host/?sharecode=GW7MQ4IIOG#mode=qr">
+      <div class="ic c1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+          <rect x="3" y="3" width="6" height="6" rx="1.2"/><rect x="15" y="3" width="6" height="6" rx="1.2"/>
+          <rect x="3" y="15" width="6" height="6" rx="1.2"/><path d="M15 15h2v2h-2zM19 15h2v2h-2zM15 19h2v2h-2zM19 19h2v2h-2z" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <div class="body">
+        <h2>二维码生成器</h2>
+        <p>文字或网址转二维码，可调纠错等级与配色，支持 PNG / SVG 导出</p>
+        <div class="tags"><span class="tag ok">离线可用</span><span class="tag">ISO 18004</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://luban-qr-code.app.workbuddy.host/?sharecode=GW7MQ4IIOG#mode=barcode">
+      <div class="ic c2">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <rect x="2" y="5" width="2" height="14"/><rect x="5.5" y="5" width="1" height="14"/>
+          <rect x="8" y="5" width="3" height="14"/><rect x="12.5" y="5" width="1" height="14"/>
+          <rect x="15" y="5" width="2" height="14"/><rect x="18.5" y="5" width="1" height="14"/>
+          <rect x="21" y="5" width="1" height="14"/>
+        </svg>
+      </div>
+      <div class="body">
+        <h2>条形码生成器</h2>
+        <p>Code 128 / EAN-13 / Code 39，自动补校验位，可带人眼可读文字</p>
+        <div class="tags"><span class="tag ok">离线可用</span><span class="tag">3 种码制</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://luban-qr-code.app.workbuddy.host/?sharecode=GW7MQ4IIOG#mode=clash">
+      <div class="ic c3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 7h9"/><path d="M17 7h3"/><circle cx="15" cy="7" r="2"/>
+          <path d="M4 17h3"/><path d="M11 17h9"/><circle cx="9" cy="17" r="2"/>
+        </svg>
+      </div>
+      <div class="body">
+        <h2>订阅转换</h2>
+        <p>Clash YAML 转 Shadowrocket txt，支持 11 种协议，逐节点容错</p>
+        <div class="tags"><span class="tag ok">离线可用</span><span class="tag">Base64</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://luban-qr-code.app.workbuddy.host/?sharecode=GW7MQ4IIOG#mode=pass">
+      <div class="ic c4">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="16" height="10" rx="2.4"/>
+          <path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15" r="1.4" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <div class="body">
+        <h2>随机密码</h2>
+        <p>加密级随机，拒绝采样消除偏差，实时显示熵值与破解耗时</p>
+        <div class="tags"><span class="tag ok">离线可用</span><span class="tag">crypto</span></div>
+      </div>
+    </a>
+
+  </main>
+
+  <div class="sect">独立应用</div>
+  <main class="grid">
+
+    <a class="card" href="https://kunlun7210.github.io/ReceiptStitch/" target="_blank" rel="noopener">
+      <div class="ic c5">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="7" rx="1.6"/><rect x="3" y="14" width="8" height="6" rx="1.6"/>
+          <path d="M14 14h7v6h-7z" fill="currentColor" stroke="none" opacity=".55"/>
+        </svg>
+      </div>
+      <div class="body">
+        <h2>智能隐私拼图</h2>
+        <p>本地识别卡尾号与余额，自动马赛克后拼图，可加平铺水印</p>
+        <div class="tags"><span class="tag net">需联网</span><span class="tag">OCR</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://cropper.app.workbuddy.host/" target="_blank" rel="noopener">
+      <div class="ic c6">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2v16h16"/><path d="M2 6h16v16"/>
+        </svg>
+      </div>
+      <div class="body">
+        <h2>截图智能裁剪</h2>
+        <p>自动识别截图黑边与状态栏，适配灵动岛安全区，一键裁净</p>
+        <div class="tags"><span class="tag net">需联网</span><span class="tag">iPhone</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://lama-watermark.app.workbuddy.host/" target="_blank" rel="noopener">
+      <div class="ic c7">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 17l5-5 4 3 3-3 4 5"/><rect x="2.5" y="3.5" width="19" height="17" rx="2.4"/>
+          <circle cx="8.5" cy="8.5" r="1.4" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <div class="body">
+        <h2>去水印</h2>
+        <p>LaMa 模型本地推理，涂抹即还原，覆盖豆包/即梦/千问等 7 个平台</p>
+        <div class="tags"><span class="tag net">需联网</span><span class="tag">ONNX</span></div>
+      </div>
+    </a>
+
+  </main>
+
+  <footer class="foot">
+    鲁班工作台 <b style="font-weight:600">v1.0</b> · 2026 年 11 月
+  </footer>
+</div>
+</body>
+</html>
