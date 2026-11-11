@@ -1,0 +1,47 @@
+.pdf-wrap {
+  max-width: 660px;
+  padding-bottom: 32px;
+}
+.pdf-wrap h1 {
+  margin-top: 18px;
+}
+.pdf-wrap > p,
+.pdf-help {
+  color: var(--text-2);
+}
+.pdf-form {
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+}
+.pdf-form input {
+  max-width: 100%;
+  min-width: 0;
+}
+.pdf-form input[type="password"] {
+  font-size: 16px;
+  padding: 10px;
+}
+.pdf-help,
+.pdf-status {
+  margin: 0;
+}
+.pdf-status:empty {
+  display: none;
+}
+.pdf-status[data-error="true"] {
+  color: var(--danger);
+}
+.pdf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.pdf-actions .btn {
+  min-height: 44px;
+  text-decoration: none;
+}
+.pdf-actions [hidden] {
+  display: none;
+}

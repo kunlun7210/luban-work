@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="鲁班工具箱">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAAAAACPAi4CAAAAzklEQVR42u2WUQ7DIAxDewbuf8adYR/9iON4ohkJ2iSQKtFCnwA7FtdYbNcBHMDPAV6u3e/39zjWBeA+AvS8eoAtXz02tg/gt7EfYJLtA0ipxtc+SAPYyixhuhaSgNhocj4PkgBcoDbTVMYSwCcJPaQHwBCMNo65HgAeIG4ES6oX4E2LP9sBhk0UA4bA4XaEyKUAVbK8+KkKi4BoX0aG8i4H+ILi3kTGcgCa+WEtNAB8xIiQLQewjX2QiJAvBqhrnlnoUaQtAc5t/QD+GPAGXu4pHSAbRowAAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAAAAAAYplnuAAABU0lEQVR42u3bwQ3CMAwFUGZg/xmZgQEQ0XeSQgwvp0pU7svFih1zuzdcN2hoaGhoaGhoaGhoaGhoaGho6MvQj3i9vv8aZy4mNDR0X/Q4+4yJ79DVmNDQ0H3R4zS38jyOCQ0N/W/oPP1BQ0NDJyUTNDT0v6FX3tkeExoaugW62uqtllhH9KehoaG3oudW+OGz7sahoaG3opNktN64uaTcgoaGPgy9q8TKNwANDd0RXd1AMvpWHY+DhobuiE4OSUkSTK6OoKGhfwmdN2oT6PiQVEp80NDQLdBzZVWeFicKOWho6MPRK1fC1QR3ySkPGhr6q+i5Nm51q6X2MTQ0dCN0fmlU/XVzuQUNDd0QnTR8P9SfhoaGbovOR1smBmqhoaEboavt3XwYZWIQHxoaugW6+te+pHz60IgbNDT0l9DHLmhoaGhoaGhoaGhoaGhoaGho6LX1BNbfOB2JqeNEAAAAAElFTkSuQmCC">
+<title>鲁班工具箱 · 二维码 / 条形码 / 订阅转换</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="7" height="7" rx="1.4" stroke="currentColor" stroke-width="1.8"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.4" stroke="currentColor" stroke-width="1.8"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.4" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M14 14h2.5v2.5H14zM18.5 14H21v2.5h-2.5zM14 18.5h2.5V21H14zM18.5 18.5H21V21h-2.5z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div>
+        <h1>鲁班工具箱</h1>
+        <p class="sub"><a class="home-link" href="../">← 工作台</a> · 全部本地处理</p>
+      </div>
+    </div>
+    <div class="seg" id="modeSeg">
+      <button data-mode="qr" class="on">二维码</button>
+      <button data-mode="barcode">条形码</button>
+      <button data-mode="clash">订阅转换</button>
+      <button data-mode="pass">密码</button>
+    </div>
+  </header>
+
+  <main class="grid" id="mainQr">
+
+    <!-- 输入区 -->
+    <section class="card pane-input">
+      <div class="field-label">
+        <span id="inputLabel">内容</span>
+        <span class="counter" id="counter">0 字</span>
+      </div>
+      <textarea id="ta" aria-labelledby="inputLabel" maxlength="7200" autocomplete="off" placeholder="输入文字或网址，自动生成二维码" spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
+
+      <div class="hint-bar" id="urlHint">
+        <span>检测到网址，是否补全 <b>https://</b>？</span>
+        <button id="urlFix">补全</button>
+      </div>
+
+      <div class="templates" id="templates">
+        <button class="chip" data-tpl="url">网址</button>
+        <button class="chip" data-tpl="wifi">Wi-Fi</button>
+        <button class="chip" data-tpl="vcard">名片</button>
+        <button class="chip" data-tpl="tel">电话</button>
+        <button class="chip" data-tpl="sms">短信</button>
+        <button class="chip" data-tpl="mail">邮件</button>
+      </div>
+
+      <!-- 二维码选项 -->
+      <div class="opts" id="qrOpts">
+        <div class="opt-row">
+          <span class="opt-name">纠错</span>
+          <div class="seg small" id="eclSeg">
+            <button data-ecl="L">低</button>
+            <button data-ecl="M" class="on">中</button>
+            <button data-ecl="Q">较高</button>
+            <button data-ecl="H">最高</button>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-name">颜色</span>
+          <div class="swatches" id="swatches">
+            <button class="sw on" data-color="#000000" style="background:#000000"></button>
+            <button class="sw" data-color="#123d6b" style="background:#123d6b"></button>
+            <button class="sw" data-color="#14532d" style="background:#14532d"></button>
+            <button class="sw" data-color="#6b1d1d" style="background:#6b1d1d"></button>
+            <button class="sw" data-color="#3f2a6b" style="background:#3f2a6b"></button>
+            <label class="sw-custom" title="自定义颜色">＋
+              <input type="color" id="colorPick" value="#000000">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 条形码选项 -->
+      <div class="opts" id="bcOpts" style="display:none">
+        <div class="opt-row">
+          <span class="opt-name">格式</span>
+          <div class="seg small" id="fmtSeg">
+            <button data-fmt="CODE128" class="on">Code 128</button>
+            <button data-fmt="EAN13">EAN-13</button>
+            <button data-fmt="CODE39">Code 39</button>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-name">条高</span>
+          <input type="range" id="bcHeight" min="60" max="200" step="10" value="110">
+          <span class="range-val" id="bcHeightVal">110 px</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-name">文字</span>
+          <label class="check"><input type="checkbox" id="bcText" checked> 条码下方显示内容</label>
+        </div>
+      </div>
+
+      <div class="history">
+        <div class="history-head">
+          <span>本页记录</span>
+          <button id="rememberCode" disabled>记下当前内容</button>
+          <button id="clearHist">清空</button>
+        </div>
+        <div class="hist-list" id="histList"></div>
+      </div>
+    </section>
+
+    <!-- 预览区 -->
+    <section class="card pane-preview">
+      <div class="preview-box">
+        <canvas id="cv" width="260" height="260" style="display:none"></canvas>
+        <div class="empty-tip" id="emptyTip">在左侧输入内容<br>实时生成</div>
+        <div class="err-tip" id="errTip" role="alert" style="display:none"></div>
+      </div>
+
+      <div class="meta" id="meta"></div>
+
+      <div class="actions">
+        <button class="btn primary" id="savePng">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>
+          保存 PNG
+        </button>
+        <button class="btn" id="saveSvg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M12 4v16"/><path d="M8 20h8"/></svg>
+          SVG
+        </button>
+        <button class="btn" id="copyImg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          复制图片
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 订阅转换 -->
+  <main class="grid" id="mainClash" style="display:none">
+    <section class="card pane-input">
+      <div class="field-label">
+        <span id="clashLabel">Clash 配置</span>
+        <span class="counter" id="clashMeta">未载入</span>
+      </div>
+
+      <div class="seg" id="dirSeg" style="display:flex;width:100%;margin-bottom:12px">
+        <button data-dir="c2s" class="on" style="flex:1">Clash → 小火箭</button>
+        <button data-dir="s2c" style="flex:1">小火箭 → Clash</button>
+      </div>
+
+      <label class="drop" id="dropZone">
+        <input type="file" id="fileInput" accept=".yaml,.yml,.txt,.conf" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2"/>
+        </svg>
+        <div class="drop-title" id="dropTitle">拖入 YAML 文件，或点击选择</div>
+        <div class="drop-sub" id="dropSub">支持 Clash / Clash Verge / Mihomo 配置</div>
+      </label>
+
+      <div class="field-label" style="margin-top:14px"><span>或直接粘贴</span><button type="button" class="chip" id="clearClash">清空</button></div>
+      <textarea id="clashTa" aria-label="订阅内容" maxlength="8388608" autocomplete="off" spellcheck="false" autocapitalize="off" autocorrect="off"
+        placeholder="proxies:&#10;  - name: 节点名&#10;    type: vless&#10;    server: 1.2.3.4&#10;    port: 443&#10;    uuid: …"></textarea>
+
+      <div class="opts">
+        <div class="opt-row">
+          <span class="opt-name">名称前缀</span>
+          <input class="text-in" id="namePrefix" type="text" placeholder="可选，如 SG-" autocomplete="off">
+        </div>
+        <div class="opt-row" id="outRow">
+          <span class="opt-name">输出</span>
+          <div class="seg small" id="outSeg">
+            <button data-out="b64" class="on">Base64 订阅</button>
+            <button data-out="plain">明文</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card pane-preview">
+      <div class="stats">
+        <div class="stat"><b id="stTotal">0</b><span>节点总数</span></div>
+        <div class="stat ok"><b id="stOk">0</b><span>已转换</span></div>
+        <div class="stat bad"><b id="stSkip">0</b><span>跳过</span></div>
+      </div>
+
+      <div class="node-list" id="nodeList">
+        <div class="node-empty">载入配置后<br>这里显示转换结果</div>
+      </div>
+
+      <div id="clashNotice" aria-live="polite"></div>
+
+      <div class="actions duo">
+        <button class="btn primary" id="saveTxt" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>
+          <span id="saveTxtLabel">保存 txt</span>
+        </button>
+        <button class="btn" id="copyTxt" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          复制内容
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 密码 -->
+  <main class="grid" id="mainPass" style="display:none">
+    <section class="card pane-input">
+      <div class="field-label">
+        <span>密码长度</span>
+        <span class="counter" id="pwLenVal">16 位</span>
+      </div>
+      <div class="opt-row">
+        <input type="range" id="pwLen" min="4" max="128" step="1" value="16">
+        <input type="number" id="pwLenNum" class="num-in" min="4" max="128" value="16">
+      </div>
+
+      <div class="opts">
+        <div class="opt-row" style="align-items:flex-start">
+          <span class="opt-name">字符</span>
+          <div class="pw-checks">
+            <label class="chk"><input type="checkbox" id="pwUp" checked> 大写 A–Z</label>
+            <label class="chk"><input type="checkbox" id="pwLo" checked> 小写 a–z</label>
+            <label class="chk"><input type="checkbox" id="pwDig" checked> 数字 0–9</label>
+            <label class="chk"><input type="checkbox" id="pwSp"> 特殊字符</label>
+          </div>
+        </div>
+        <div class="opt-row" id="pwSpRow" style="display:none">
+          <span class="opt-name">符号集</span>
+          <input class="text-in" id="pwSpChars" type="text" value="!@#$%^&*()-_=+" maxlength="40"
+                 spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off">
+        </div>
+        <div class="opt-row">
+          <span class="opt-name">选项</span>
+          <label class="chk"><input type="checkbox" id="pwAmb"> 排除易混淆字符（0 O o l 1 I）</label>
+        </div>
+        <div class="opt-row">
+          <span class="opt-name">数量</span>
+          <input type="number" id="pwQty" class="num-in" min="1" max="50" value="1">
+          <span class="counter">组</span>
+        </div>
+      </div>
+
+      <div class="hint" id="pwTip"></div>
+
+      <div class="actions duo" style="margin-top:14px">
+        <button class="btn primary" id="pwGen">生成密码</button>
+      </div>
+    </section>
+
+    <section class="card pane-preview">
+      <div class="field-label">
+        <span>本次结果</span>
+        <button class="link-btn" id="pwToggle" type="button">隐藏</button>
+      </div>
+
+      <div class="pw-list" id="pwList">
+        <div class="node-empty">点「生成密码」<br>或直接按回车</div>
+      </div>
+
+      <div class="actions duo" style="margin-top:12px">
+        <button class="btn" id="pwCopyAll">复制全部</button>
+        <button class="btn" id="pwRegen">重新生成</button>
+      </div>
+
+      <div class="history">
+        <div class="history-head">
+          <span>历史记录</span>
+          <span style="display:flex;align-items:center;gap:12px">
+            <label class="chk" style="font-size:11.5px"><input type="checkbox" id="pwSaveHist"> 仅本页保存</label>
+            <button id="pwClearHist" type="button">清空</button>
+          </span>
+        </div>
+        <div class="hist-list" id="pwHistList"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    鲁班工具箱 <b style="font-weight:600">v1.2</b><span class="sep">·</span>2026 年 11 月
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+<div class="overlay" id="overlay">
+  <div class="overlay-inner">
+    <img id="ovImg" alt="生成的图片">
+    <p>长按图片 → 选择「存储到照片」</p>
+    <div class="close-row">
+      <button class="btn" id="ovDownload">下载到文件</button>
+      <button class="btn" id="ovClose">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script src="./vendor/js-yaml.umd.min.js"></script>
+<script src="./codes.js"></script>
+<script src="./subscriptions.js"></script>
+<script src="./app.js"></script>
+<script src="../register.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>PDF 去密码 · 鲁班工作台</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./pdf.css">
+  <script src="./pdf.js" defer></script>
+  <script src="../../register.js" defer></script>
+</head>
+<body>
+  <main class="wrap pdf-wrap">
+    <nav aria-label="返回"><a class="home-link" href="../../">← 鲁班工作台</a></nav>
+    <h1>PDF 去密码</h1>
+    <p>解除打开密码或打印、复制限制，另存一份 PDF。文件和密码只在当前浏览器处理。</p>
+
+    <form class="card pdf-form">
+      <label for="pdf-file">选择 PDF（最大 50 MB）</label>
+      <input id="pdf-file" type="file" accept=".pdf,application/pdf" required>
+
+      <label for="pdf-password">打开密码</label>
+      <input id="pdf-password" class="text-in" type="password" autocomplete="off"
+        placeholder="没有打开密码时留空" aria-describedby="password-help">
+      <p id="password-help" class="pdf-help">能直接打开、只限制打印或复制的文件，密码留空即可。</p>
+
+      <div class="pdf-actions">
+        <button class="btn primary" type="submit" id="unlock">解除保护</button>
+        <button class="btn" type="button" id="cancel" hidden>取消</button>
+        <a class="btn" id="download" hidden>下载 PDF 副本</a>
+      </div>
+      <p id="pdf-status" class="pdf-status" role="status"></p>
+    </form>
+  </main>
+</body>
+</html>
