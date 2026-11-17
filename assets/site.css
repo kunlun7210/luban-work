@@ -88,3 +88,18 @@ details summary { cursor: pointer; }
   .card { padding: 8px; gap: 6px; }
   .card-icon { width: 30px; height: 30px; }
 }
+
+.extra-field { display: grid; gap: 5px; }
+.extra-field:has(input[type="checkbox"]) { display:flex; align-items:center; gap:8px; }
+.extra-result img.preview-image { margin-bottom:10px; max-height:420px; object-fit:contain; }
+.extra-files .actions { margin-bottom: 12px; }
+.extra-color-image { max-width:100%; cursor:crosshair; }
+.tool-panel textarea { min-height:6rem; resize:vertical; }
+.extra-table { overflow:auto; }
+.extra-table table { border-collapse:collapse; }
+.extra-table td,.extra-table th { border:1px solid var(--line); padding:6px 10px; }
+.extra-rich { min-height: 10rem; padding:10px; border:1px solid var(--line); background:white; border-radius:9px; overflow-wrap:anywhere; }
+.extra-markdown { overflow-wrap:anywhere; }
+.extra-weeks { display:grid; grid-template-columns:repeat(52,minmax(0,1fr)); gap:2px; }
+.extra-weeks i { aspect-ratio:1; border-radius:2px; border:1px solid #ddd8cd; }
+.extra-weeks .used { background:#80af91; border-color:#80af91; }
