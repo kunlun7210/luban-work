@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="万能工具箱">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" type="image/svg+xml" href="../../static/icons/toolbox-classic.svg">
+<link rel="apple-touch-icon" href="../../static/icons/toolbox.png">
+<title>条形码生成器 · 万能工具箱</title>
+<link rel="stylesheet" href="../../tool/luban-assets/styles.css">
+</head>
+<body data-mode="barcode">
+<div class="wrap">
+
+  <header class="head">
+    <div class="brand">
+      <img class="toolbox-mark" src="../../static/icons/toolbox-classic.svg" width="42" height="42" alt="">
+      <div>
+        <h1>条形码生成器</h1>
+        <p class="sub"><a class="home-link" href="../../#tool-library">← 返回万能工具箱</a> · 全部本地处理</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="grid" id="mainQr" style="display:none">
+
+    <!-- 输入区 -->
+    <section class="card pane-input">
+      <div class="field-label">
+        <span id="inputLabel">内容</span>
+        <span class="counter" id="counter">0 字</span>
+      </div>
+      <textarea id="ta" aria-labelledby="inputLabel" maxlength="7200" autocomplete="off" placeholder="输入文字或网址，自动生成二维码" spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
+
+      <div class="hint-bar" id="urlHint">
+        <span>检测到网址，是否补全 <b>https://</b>？</span>
+        <button id="urlFix">补全</button>
+      </div>
+
+      <div class="templates" id="templates">
+        <button class="chip" data-tpl="url">网址</button>
+        <button class="chip" data-tpl="wifi">Wi-Fi</button>
+        <button class="chip" data-tpl="vcard">名片</button>
+        <button class="chip" data-tpl="tel">电话</button>
+        <button class="chip" data-tpl="sms">短信</button>
+        <button class="chip" data-tpl="mail">邮件</button>
+      </div>
+
+      <!-- 二维码选项 -->
+      <div class="opts" id="qrOpts">
+        <div class="opt-row">
+          <span class="opt-name">纠错</span>
+          <div class="seg small" id="eclSeg">
+            <button data-ecl="L">低</button>
+            <button data-ecl="M" class="on">中</button>
+            <button data-ecl="Q">较高</button>
+            <button data-ecl="H">最高</button>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-name">颜色</span>
+          <div class="swatches" id="swatches">
+            <button class="sw on" data-color="#000000" style="background:#000000"></button>
+            <button class="sw" data-color="#123d6b" style="background:#123d6b"></button>
+            <button class="sw" data-color="#14532d" style="background:#14532d"></button>
+            <button class="sw" data-color="#6b1d1d" style="background:#6b1d1d"></button>
+            <button class="sw" data-color="#3f2a6b" style="background:#3f2a6b"></button>
+            <label class="sw-custom" title="自定义颜色">＋
+              <input type="color" id="colorPick" value="#000000">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 条形码选项 -->
+      <div class="opts" id="bcOpts" style="display:none">
+        <div class="opt-row">
+          <span class="opt-name">格式</span>
+          <div class="seg small" id="fmtSeg">
+            <button data-fmt="CODE128" class="on">Code 128</button>
+            <button data-fmt="EAN13">EAN-13</button>
+            <button data-fmt="CODE39">Code 39</button>
+          </div>
+        </div>
+        <div class="opt-row">
+          <span class="opt-name">条高</span>
+          <input type="range" id="bcHeight" min="60" max="200" step="10" value="110">
+          <span class="range-val" id="bcHeightVal">110 px</span>
+        </div>
+        <div class="opt-row">
+          <span class="opt-name">文字</span>
+          <label class="check"><input type="checkbox" id="bcText" checked> 条码下方显示内容</label>
+        </div>
+      </div>
+
+      <div class="history">
+        <div class="history-head">
+          <span>本页记录</span>
+          <button id="rememberCode" disabled>记下当前内容</button>
+          <button id="clearHist">清空</button>
+        </div>
+        <div class="hist-list" id="histList"></div>
+      </div>
+    </section>
+
+    <!-- 预览区 -->
+    <section class="card pane-preview">
+      <div class="preview-box">
+        <canvas id="cv" width="260" height="260" style="display:none"></canvas>
+        <div class="empty-tip" id="emptyTip">在左侧输入内容<br>实时生成</div>
+        <div class="err-tip" id="errTip" role="alert" style="display:none"></div>
+      </div>
+
+      <div class="meta" id="meta"></div>
+
+      <div class="actions">
+        <button class="btn primary" id="savePng">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>
+          保存 PNG
+        </button>
+        <button class="btn" id="saveSvg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M12 4v16"/><path d="M8 20h8"/></svg>
+          SVG
+        </button>
+        <button class="btn" id="copyImg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          复制图片
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 订阅转换 -->
+  <main class="grid" id="mainClash" style="display:none">
+    <section class="card pane-input">
+      <div class="field-label">
+        <span id="clashLabel">Clash 配置</span>
+        <span class="counter" id="clashMeta">未载入</span>
+      </div>
+
+      <div class="seg" id="dirSeg" style="display:flex;width:100%;margin-bottom:12px">
+        <button data-dir="c2s" class="on" style="flex:1">Clash → 小火箭</button>
+        <button data-dir="s2c" style="flex:1">小火箭 → Clash</button>
+      </div>
+
+      <label class="drop" id="dropZone">
+        <input type="file" id="fileInput" accept=".yaml,.yml,.txt,.conf" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2"/>
+        </svg>
+        <div class="drop-title" id="dropTitle">拖入 YAML 文件，或点击选择</div>
+        <div class="drop-sub" id="dropSub">支持 Clash / Clash Verge / Mihomo 配置</div>
+      </label>
+
+      <div class="field-label" style="margin-top:14px"><span>或直接粘贴</span><button type="button" class="chip" id="clearClash">清空</button></div>
+      <textarea id="clashTa" aria-label="订阅内容" maxlength="8388608" autocomplete="off" spellcheck="false" autocapitalize="off" autocorrect="off"
+        placeholder="proxies:&#10;  - name: 节点名&#10;    type: vless&#10;    server: 1.2.3.4&#10;    port: 443&#10;    uuid: …"></textarea>
+
+      <div class="opts">
+        <div class="opt-row">
+          <span class="opt-name">名称前缀</span>
+          <input class="text-in" id="namePrefix" type="text" placeholder="可选，如 SG-" autocomplete="off">
+        </div>
+        <div class="opt-row" id="outRow">
+          <span class="opt-name">输出</span>
+          <div class="seg small" id="outSeg">
+            <button data-out="b64" class="on">Base64 订阅</button>
+            <button data-out="plain">明文</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card pane-preview">
+      <div class="stats">
+        <div class="stat"><b id="stTotal">0</b><span>节点总数</span></div>
+        <div class="stat ok"><b id="stOk">0</b><span>已转换</span></div>
+        <div class="stat bad"><b id="stSkip">0</b><span>跳过</span></div>
+      </div>
+
+      <div class="node-list" id="nodeList">
+        <div class="node-empty">载入配置后<br>这里显示转换结果</div>
+      </div>
+
+      <div id="clashNotice" aria-live="polite"></div>
+
+      <div class="actions duo">
+        <button class="btn primary" id="saveTxt" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 20h16"/></svg>
+          <span id="saveTxtLabel">保存 txt</span>
+        </button>
+        <button class="btn" id="copyTxt" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          复制内容
+        </button>
+      </div>
+    </section>
+  </main>
+
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+<div class="overlay" id="overlay">
+  <div class="overlay-inner">
+    <img id="ovImg" alt="生成的图片">
+    <p>长按图片 → 选择「存储到照片」</p>
+    <div class="close-row">
+      <button class="btn" id="ovDownload">下载到文件</button>
+      <button class="btn" id="ovClose">关闭</button>
+    </div>
+  </div>
+</div>
+
+<script src="../../tool/luban-assets/vendor/js-yaml.umd.min.js"></script>
+<script src="../../tool/luban-assets/codes.js"></script>
+<script src="../../tool/luban-assets/subscriptions.js"></script>
+<script src="../../tool/luban-assets/app.js"></script>
+</body>
+</html>

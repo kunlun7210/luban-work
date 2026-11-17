@@ -1,8 +1,9 @@
 const prefix = 'luban-work-shell-';
-const cacheName = prefix + 'v2';
+const cacheName = prefix + 'v3';
 const scope = self.registration.scope;
 const assets = [
-  './', 'index.html', 'register.js', 'tools/', 'tools/index.html', 'tools/styles.css',
+  './', 'index.html', 'register.js', 'assets/site.css', 'assets/home.mjs',
+  'assets/catalog.json', 'assets/toolbox-classic.svg', 'tools/', 'tools/index.html', 'tools/styles.css',
   'tools/pdf/', 'tools/pdf/index.html', 'tools/pdf/pdf.css', 'tools/pdf/pdf.js', 'tools/pdf/pdf-worker.js',
   'tools/codes.js', 'tools/subscriptions.js', 'tools/app.js', 'tools/vendor/js-yaml.umd.min.js',
 ].map(path => new URL(path, scope).href);
@@ -13,8 +14,11 @@ const pdfEngine = new Set(['qpdf.js', 'qpdf.wasm'].map(
 const directoryRoutes = new Set(['tools', 'tools/pdf'].map(path => new URL(path, scope).href));
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(cacheName).then(cache =>
-    cache.addAll(assets.map(url => new Request(url, { cache: 'reload' })))));
+  event.waitUntil((async () => {
+    const cache = await caches.open(cacheName);
+    await cache.addAll(assets.map(url => new Request(url, { cache: 'reload' })));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', event => {

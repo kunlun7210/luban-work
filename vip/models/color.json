@@ -1,0 +1,13 @@
+{
+  "length": 32588689,
+  "chunks": [
+    "color-01.bin",
+    "color-02.bin",
+    "color-03.bin",
+    "color-04.bin",
+    "color-05.bin",
+    "color-06.bin"
+  ],
+  "checkpointSha256": "9b330a0bae53f4ded77b1e23defbf78beaa09c10ebc4c4999e8e4f4a160b93f9",
+  "modelSha256": "547836b74ce4871beffefe8a32a24935a52f4951699624446abbba19381efcfc"
+}

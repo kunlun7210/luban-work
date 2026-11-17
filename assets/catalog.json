@@ -1,0 +1,576 @@
+[
+  {
+    "id": "qrcode",
+    "name": "二维码工具",
+    "category": "IMAGE",
+    "mode": "web",
+    "keywords": [
+      "二维码生成",
+      "二维码扫描",
+      "Wi-Fi",
+      "名片"
+    ]
+  },
+  {
+    "id": "password-generator",
+    "name": "密码生成器",
+    "category": "TEXT",
+    "mode": "web",
+    "keywords": [
+      "随机密码"
+    ]
+  },
+  {
+    "id": "barcode-generator",
+    "name": "条形码生成器",
+    "category": "GENERIC",
+    "mode": "web"
+  },
+  {
+    "id": "subscription-converter",
+    "name": "订阅转换",
+    "category": "DEVELOPMENT",
+    "mode": "web",
+    "keywords": [
+      "Clash",
+      "小火箭",
+      "Shadowrocket"
+    ]
+  },
+  {
+    "id": "pdf-unlock",
+    "name": "PDF 去密码",
+    "category": "GENERIC",
+    "mode": "web"
+  },
+  {
+    "id": "smart-watermark-remover",
+    "name": "智能去水印",
+    "category": "IMAGE",
+    "mode": "external",
+    "url": "https://kunlun7210.github.io/lama-watermark-web/"
+  },
+  {
+    "id": "smart-screenshot-cropper",
+    "name": "智能裁剪截图",
+    "category": "IMAGE",
+    "mode": "external",
+    "url": "https://kunlun7210.github.io/Cropper/"
+  },
+  {
+    "id": "privacy-collage",
+    "name": "智能隐私拼图",
+    "category": "IMAGE",
+    "mode": "external",
+    "url": "https://kunlun7210.github.io/zhetu/"
+  },
+  {
+    "id": "travel-map",
+    "name": "足迹地图",
+    "category": "GENERIC",
+    "mode": "external",
+    "url": "https://kunlun7210.github.io/TravelMap/"
+  },
+  {
+    "id": "base-converter",
+    "name": "进制转换器",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "cidr-calculator",
+    "name": "CIDR 计算器",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "md5-hash",
+    "name": "MD5 加密",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "morse-code",
+    "name": "摩斯电码",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "ua-parser",
+    "name": "UA 解析",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "url-shortener",
+    "name": "短网址生成",
+    "category": "GENERIC",
+    "mode": "local"
+  },
+  {
+    "id": "number2chinese",
+    "name": "数字转中文",
+    "category": "TEXT",
+    "mode": "local"
+  },
+  {
+    "id": "params-serialization",
+    "name": "URL 参数序列化",
+    "category": "DEVELOPMENT",
+    "mode": "web"
+  },
+  {
+    "id": "yaml2json",
+    "name": "YAML & JSON",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "id-photo",
+    "name": "证件照制作",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "batch-cutout",
+    "name": "批量人像抠图",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "gif-splitter",
+    "name": "GIF 分解",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "kinship-calculator",
+    "name": "亲戚关系计算器",
+    "category": "MISC",
+    "mode": "local"
+  },
+  {
+    "id": "video2gif",
+    "name": "视频转 GIF",
+    "category": "VIDEO",
+    "mode": "local"
+  },
+  {
+    "id": "audio-extractor",
+    "name": "音频提取器",
+    "category": "VIDEO",
+    "mode": "local"
+  },
+  {
+    "id": "tts",
+    "name": "文本转语音",
+    "category": "TEXT",
+    "mode": "local"
+  },
+  {
+    "id": "ocr",
+    "name": "文本识别(OCR)",
+    "category": "TEXT",
+    "mode": "web",
+    "keywords": [
+      "OCR",
+      "文字识别"
+    ]
+  },
+  {
+    "id": "json-editor",
+    "name": "JSON 编辑器",
+    "category": "DEVELOPMENT",
+    "mode": "web"
+  },
+  {
+    "id": "garbage-sort",
+    "name": "垃圾分类查询",
+    "category": "QUERY",
+    "mode": "local"
+  },
+  {
+    "id": "image-compressor",
+    "name": "图片压缩",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "text2image",
+    "name": "文本转图片",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "text-statistics",
+    "name": "文本统计",
+    "category": "TEXT",
+    "mode": "web"
+  },
+  {
+    "id": "linuxman",
+    "name": "Linux 命令手册",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "factorial-calculator",
+    "name": "阶乘计算器",
+    "category": "MISC",
+    "mode": "web"
+  },
+  {
+    "id": "bmi-calculator",
+    "name": "BMI 计算器",
+    "category": "MISC",
+    "mode": "local"
+  },
+  {
+    "id": "micropython-interpreter",
+    "name": "MicroPython 解释器",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "zip-archive",
+    "name": "ZIP 压缩/解压",
+    "category": "MISC",
+    "mode": "local"
+  },
+  {
+    "id": "speedtest",
+    "name": "网络测速",
+    "category": "GENERIC",
+    "mode": "local"
+  },
+  {
+    "id": "soul-words",
+    "name": "心灵毒鸡汤",
+    "category": "TEXT",
+    "mode": "local"
+  },
+  {
+    "id": "icp",
+    "name": "ICP 备案查询",
+    "category": "QUERY",
+    "mode": "local"
+  },
+  {
+    "id": "whois",
+    "name": "域名 WHOIS 查询",
+    "category": "QUERY",
+    "mode": "local"
+  },
+  {
+    "id": "pomodoro-clock",
+    "name": "番茄时钟",
+    "category": "GENERIC",
+    "mode": "local"
+  },
+  {
+    "id": "base64-encoding",
+    "name": "Base64 编码/解码",
+    "category": "TEXT",
+    "mode": "web"
+  },
+  {
+    "id": "ganzhi",
+    "name": "天干地支计算器",
+    "category": "MISC",
+    "mode": "local"
+  },
+  {
+    "id": "image2base64",
+    "name": "图片转 Base64",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "timestamp",
+    "name": "时间戳转换",
+    "category": "DEVELOPMENT",
+    "mode": "web"
+  },
+  {
+    "id": "xml2json",
+    "name": "XML 转 JSON",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "pangu",
+    "name": "盘古之白",
+    "category": "TEXT",
+    "mode": "local"
+  },
+  {
+    "id": "picture-resizer",
+    "name": "图片缩放",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "what-anime",
+    "name": "以图搜番",
+    "category": "QUERY",
+    "mode": "local"
+  },
+  {
+    "id": "color-picker",
+    "name": "取色器",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "gif-encoder",
+    "name": "GIF 合成",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "screen-recorder",
+    "name": "屏幕录制",
+    "category": "VIDEO",
+    "mode": "local"
+  },
+  {
+    "id": "translator",
+    "name": "在线翻译",
+    "category": "QUERY",
+    "mode": "local"
+  },
+  {
+    "id": "sqlite-viewer",
+    "name": "SQLite 查看器",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "image-converter",
+    "name": "图片格式转换",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "lua-interpreter",
+    "name": "Lua 解释器",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "watermark",
+    "name": "图片加水印",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "currency-converter",
+    "name": "货币汇率换算",
+    "category": "QUERY",
+    "mode": "local"
+  },
+  {
+    "id": "nine-grid",
+    "name": "九宫格切图",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "regex-hub",
+    "name": "正则表达式大全",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "richtext-editor",
+    "name": "富文本编辑器",
+    "category": "TEXT",
+    "mode": "local"
+  },
+  {
+    "id": "webm2mp4",
+    "name": "WebM 转 MP4",
+    "category": "VIDEO",
+    "mode": "local"
+  },
+  {
+    "id": "markdown-editor",
+    "name": "Markdown 编辑器",
+    "category": "TEXT",
+    "mode": "local"
+  },
+  {
+    "id": "minify-js",
+    "name": "JS 压缩",
+    "category": "DEVELOPMENT",
+    "mode": "local"
+  },
+  {
+    "id": "face-fusion",
+    "name": "人脸融合",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "image-colorizer",
+    "name": "黑白图像上色",
+    "category": "IMAGE",
+    "mode": "web"
+  },
+  {
+    "id": "bilibili-cover",
+    "name": "bilibili 封面获取",
+    "category": "QUERY",
+    "mode": "local"
+  },
+  {
+    "id": "image-patina",
+    "name": "图片包浆",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "random-number",
+    "name": "随机数生成器",
+    "category": "MISC",
+    "mode": "local"
+  },
+  {
+    "id": "lifecount",
+    "name": "人生小格",
+    "category": "GENERIC",
+    "mode": "local"
+  },
+  {
+    "id": "histoday",
+    "name": "历史上的今天",
+    "category": "QUERY",
+    "mode": "local"
+  },
+  {
+    "id": "pdf2img",
+    "name": "PDF 转图片",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "mirage-tank",
+    "name": "幻影坦克(隐藏图)",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "image-editor",
+    "name": "图片编辑器",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "date-calculator",
+    "name": "日期计算器",
+    "category": "MISC",
+    "mode": "local"
+  },
+  {
+    "id": "picture-sketch",
+    "name": "图片素描",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "figlet-ascii",
+    "name": "艺术字符生成",
+    "category": "TEXT",
+    "mode": "local"
+  },
+  {
+    "id": "exotic-text",
+    "name": "特殊文字生成器",
+    "category": "TEXT",
+    "mode": "local"
+  },
+  {
+    "id": "binary-codec",
+    "name": "原码/反码/补码",
+    "category": "DEVELOPMENT",
+    "mode": "web"
+  },
+  {
+    "id": "what2eat",
+    "name": "今天吃什么",
+    "category": "GENERIC",
+    "mode": "local"
+  },
+  {
+    "id": "image-invert",
+    "name": "图片反色",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "table-extractor",
+    "name": "图片提取表格",
+    "category": "IMAGE",
+    "mode": "web"
+  },
+  {
+    "id": "img2pdf",
+    "name": "图片转 PDF",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "e-muyu",
+    "name": "电子木鱼",
+    "category": "GENERIC",
+    "mode": "local"
+  },
+  {
+    "id": "simp-words",
+    "name": "舔狗日记",
+    "category": "TEXT",
+    "mode": "local"
+  },
+  {
+    "id": "unicode-converter",
+    "name": "Unicode & 字符转换",
+    "category": "TEXT",
+    "mode": "web"
+  },
+  {
+    "id": "chinese-dictionary",
+    "name": "汉语词典",
+    "category": "QUERY",
+    "mode": "local"
+  },
+  {
+    "id": "bing-wallpaper",
+    "name": "必应壁纸",
+    "category": "GENERIC",
+    "mode": "local"
+  },
+  {
+    "id": "object-detection",
+    "name": "拍照计数",
+    "category": "IMAGE",
+    "mode": "local"
+  },
+  {
+    "id": "bookkeeping",
+    "name": "记账",
+    "category": "GENERIC",
+    "mode": "local"
+  },
+  {
+    "id": "friend-reconcile",
+    "name": "朋友和好测试",
+    "category": "MISC",
+    "mode": "local"
+  },
+  {
+    "id": "friend-compatibility",
+    "name": "朋友契合度测试",
+    "category": "MISC",
+    "mode": "local"
+  }
+]

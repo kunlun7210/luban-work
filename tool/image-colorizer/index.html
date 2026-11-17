@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; worker-src 'self' blob:; connect-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>万能工具箱</title>
+  <link rel="icon" type="image/svg+xml" href="../../static/icons/toolbox-classic.svg">
+  <link rel="stylesheet" href="../../vip/style.css?v=2">
+  <script type="module" src="../../vip/app.mjs?v=brand1"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../?v=local1"><img src="../../static/icons/toolbox-classic.svg" alt="" width="30" height="30">万能工具箱</a>
+    <a class="home-link" href="../../?v=local1#tool-library">返回工具库</a>
+  </header>
+  <main class="page">
+    <div class="intro">
+      <h1 id="title"></h1>
+      <p id="description"></p>
+    </div>
+    <div class="workspace">
+      <section class="card controls" aria-label="输入与设置">
+        <div id="inputs"></div>
+        <div id="options"></div>
+        <div class="actions">
+          <button id="run" class="primary" type="button" disabled></button>
+          <button id="stop" type="button" hidden>停止</button>
+        </div>
+        <p class="privacy">图片在当前浏览器内处理。首次使用会加载模型。</p>
+      </section>
+      <section class="card output" aria-labelledby="output-title">
+        <h2 id="output-title">处理结果</h2>
+        <div id="status" role="status" aria-live="polite" class="status" hidden></div>
+        <div id="progress" class="progress" hidden><progress aria-label="处理进度"></progress></div>
+        <div id="result" aria-live="polite"><p class="placeholder">选择图片后开始处理</p></div>
+      </section>
+    </div>
+  </main>
+  <noscript>请启用 JavaScript 以使用本地工具。</noscript>
+</body>
+</html>
