@@ -21,7 +21,12 @@
 
   <noscript>请启用 JavaScript 使用订阅转换。</noscript>
   <div class="subscription-grid" inert aria-busy="true">
-    <div class="subscription-source">
+    <nav class="subscription-nav" aria-label="订阅工作台">
+      <button type="button" data-page="subscriptions" aria-current="page"><span aria-hidden="true">▤</span> 我的订阅</button>
+      <button type="button" data-page="rules"><span aria-hidden="true">⑂</span> 分流规则</button>
+      <button type="button" data-page="export"><span aria-hidden="true">↗</span> 生成与导出</button>
+    </nav>
+    <div class="subscription-source" data-panel="subscriptions">
       <section class="subscription-panel" aria-labelledby="source-title">
         <h2 id="source-title">导入订阅</h2>
         <div class="subscription-row">
@@ -76,9 +81,15 @@
       </section>
     </div>
 
-    <section class="subscription-panel subscription-output" aria-labelledby="output-title">
+    <section class="subscription-panel subscription-rule-page" data-panel="rules" hidden aria-labelledby="rule-title">
+      <h2 id="rule-title">分流规则</h2>
+      <p>选择用于 Clash Verge / Mihomo 完整配置的方案。</p>
+      <div id="rule-cards"></div>
+    </section>
+    <section class="subscription-panel subscription-output" data-panel="export" hidden aria-labelledby="output-title">
       <h2 id="output-title">导出配置</h2>
-      <label for="format">客户端与格式</label>
+      <div id="client-picker" class="subscription-clients" role="group" aria-label="目标客户端"></div>
+      <label for="format">输出格式</label>
       <select id="format">
         <option value="clash">Clash Verge / Mihomo · 完整配置</option>
         <option value="provider">Clash / Mihomo · 节点列表</option>
@@ -95,7 +106,9 @@
         <label for="rules">规则方案</label>
         <select id="rules">
           <option value="standard">基础分流</option>
-          <option value="acl">ACL4SSR Mini</option>
+          <option value="acl-default">ACL4SSR 默认</option>
+          <option value="acl-full">ACL4SSR 全分组</option>
+          <option value="acl">ACL4SSR 精简</option>
         </select>
         <small id="rules-status" class="subscription-status" role="status"></small>
       </div>

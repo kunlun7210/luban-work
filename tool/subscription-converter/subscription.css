@@ -61,3 +61,32 @@
 .subscription-rules { display: grid; gap: 6px; }
 #saved-list li { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 #saved-list label { flex: 1; min-width: 0; }
+.subscription-grid { grid-template-columns: 155px minmax(0, 1fr); align-items: start; }
+.subscription-nav {
+  position: sticky; top: 16px; display: grid; gap: 6px; padding: 10px;
+  border: 1px solid var(--line); border-radius: 14px; background: var(--card);
+}
+.subscription-nav button { text-align: left; }
+.subscription-nav button span { display: inline-block; width: 21px; }
+.subscription-nav button[aria-current] { background: #dce9e0; color: #214b38; border-color: #b8d2c0; font-weight: 700; }
+.subscription-clients { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 7px; }
+.subscription-clients button { display: grid; justify-items: center; gap: 6px; font-size: 13px; }
+.subscription-clients button span {
+  display: grid; place-items: center; width: 39px; height: 39px; border-radius: 12px;
+  background: #e2eee4; color: #245c47; font: bold 25px/1 system-ui;
+}
+.subscription-clients button:nth-child(2) span { background: #e4ecfa; color: #294f8b; }
+.subscription-clients button:nth-child(3) span { background: #fbe4e4; color: #923946; }
+.subscription-clients button:nth-child(4) span { background: #ece5fa; color: #654978; }
+.subscription-clients button:nth-child(5) span { background: #f4e8d2; color: #714b1f; }
+.subscription-clients button[aria-pressed="true"] { border-color: var(--accent); background: #f0f7f2; }
+#rule-cards { display: grid; gap: 8px; }
+#rule-cards article { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: white; }
+#rule-cards label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+#rule-cards details { margin-top: 8px; }
+@media (max-width: 760px) {
+  .subscription-grid { grid-template-columns: minmax(0, 1fr); }
+  .subscription-nav { position: static; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .subscription-nav button { padding: 6px 3px; text-align: center; font-size: 13px; }
+  .subscription-nav button span { width: 14px; }
+}

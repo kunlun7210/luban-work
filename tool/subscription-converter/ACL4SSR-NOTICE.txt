@@ -1,5 +1,6 @@
+Attribution: ACL4SSR and its contributors.
 Source snapshot: https://github.com/pengchujin/tower/tree/873f854/Tower/Resources/ACL4SSR
-Changes: packaged the list files as JSON and mapped routing labels to DIRECT, REJECT or the selected proxy group.
+Changes: packaged the three preset definitions and referenced rule lists as JSON. The web exporter resolves policy groups and skips unsupported Mihomo rules. Rule data and adaptations are CC BY-SA 4.0.
 
 ACL4SSR rules
 =============

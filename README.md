@@ -8,7 +8,7 @@
 
 ## 订阅转换
 
-支持粘贴节点链接、Base64 或 Clash YAML，亦可选择本地文件。在 [订阅转换](https://kunlun7210.github.io/luban-work/tool/subscription-converter/) 中筛选节点后，可导出 Mihomo 完整配置或节点列表、小火箭分享链接或 Base64，以及 Surge、Loon、Quantumult X 的节点条目。订阅网址由浏览器向源站读取，受源站跨域设置限制。「我的订阅」可在当前浏览器保存和合并多个订阅。Mihomo 完整配置可选择 Tower 随附的 ACL4SSR Mini 快照，来源与许可见 [ACL4SSR 声明](tool/subscription-converter/ACL4SSR-NOTICE.txt)。格式参考 [Tower](https://github.com/pengchujin/tower)，相关部分适用 [MIT 许可](tool/subscription-converter/TOWER-LICENSE.txt)。
+支持粘贴节点链接、Base64 或 Clash YAML，亦可选择本地文件。在 [订阅转换](https://kunlun7210.github.io/luban-work/tool/subscription-converter/) 中筛选节点后，可导出 Mihomo 完整配置或节点列表、小火箭分享链接或 Base64，以及 Surge、Loon、Quantumult X 的节点条目。订阅网址由浏览器向源站读取，受源站跨域设置限制。「我的订阅」可在当前浏览器保存和合并多个订阅。Mihomo 完整配置可选择 Tower 随附的 ACL4SSR 默认、全分组或精简方案，来源与许可见 [ACL4SSR 声明](tool/subscription-converter/ACL4SSR-NOTICE.txt)。格式参考 [Tower](https://github.com/pengchujin/tower)，相关部分适用 [MIT 许可](tool/subscription-converter/TOWER-LICENSE.txt)。
 
 ## 开发
 

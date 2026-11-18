@@ -16,12 +16,18 @@ let selected = new Set();
 let compatibility = [];
 let currentRead;
 let revision = 0;
-let preset;
+let ruleBundle;
+const ruleNames = {
+  standard: ['基础分流', '可将中国大陆和局域网流量设为直连。'],
+  'acl-default': ['ACL4SSR 默认', '包含广告拦截、国外媒体、Telegram、微软与苹果分流。'],
+  'acl-full': ['ACL4SSR 全分组', '包含地区、流媒体、AI、游戏和音乐分组。'],
+  acl: ['ACL4SSR 精简', '使用直连、拦截、自动选择与少量策略组。'],
+};
 let rulesRequest;
 const savedKey = 'luban.subscription.sources.v1';
 const sourceSelection = new Set();
 const engine = () => globalThis.LubanClash;
-const options = () => ({ format: $('format').value, prefix: $('prefix').value, split: $('split').checked, preset: $('rules').value === 'acl' ? preset : undefined });
+const options = () => ({ format: $('format').value, prefix: $('prefix').value, split: $('split').checked, preset: ruleBundle?.presets[$('rules').value] ? { definition: ruleBundle.presets[$('rules').value], lists: ruleBundle.lists } : undefined });
 
 function status(id, message, isError = false) {
   $(id).textContent = message;
@@ -78,8 +84,8 @@ function renderOutput() {
   $('format-help').textContent = formats[settings.format][1];
   const isClash = settings.format === 'clash';
   $('rules-row').hidden = !isClash;
-  $('split-row').hidden = !isClash || $('rules').value === 'acl';
-  const waitingForRules = isClash && $('rules').value === 'acl' && !preset;
+  $('split-row').hidden = !isClash || $('rules').value !== 'standard';
+  const waitingForRules = isClash && $('rules').value !== 'standard' && !settings.preset;
   const result = waitingForRules ? { text: '', ok: 0 } : exportNodes(rows, { ...settings, selected }, engine());
   if (result.ruleStats) {
     const { count, skipped } = result.ruleStats;
@@ -357,29 +363,111 @@ window.addEventListener('storage', event => {
   catch { status('saved-status', '当前浏览器无法读取已保存的订阅', true); }
 });
 
-$('rules').onchange = async () => {
-  status('rules-status', '');
-  renderOutput();
-  if ($('rules').value !== 'acl' || preset) return;
-  status('rules-status', '正在加载规则…');
-  rulesRequest ||= fetch(new URL('acl4ssr-mini.json', import.meta.url)).then(response => {
+async function loadRuleBundle() {
+  rulesRequest ||= fetch(new URL('acl4ssr-presets.json', import.meta.url)).then(response => {
     if (!response.ok) throw new Error();
     return response.json();
   });
+  try { ruleBundle = await rulesRequest; }
+  catch (error) { rulesRequest = undefined; throw error; }
+}
+
+function renderRuleCards() {
+  const area = $('rule-cards');
+  const opened = new Set([...area.querySelectorAll('details[open]')].map(details => details.dataset.rule));
+  area.replaceChildren(...Object.entries(ruleNames).map(([key, [title, description]]) => {
+    const card = document.createElement('article');
+    const label = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'rule-card';
+    radio.checked = $('rules').value === key;
+    radio.onchange = () => {
+      $('rules').value = key;
+      $('rules').dispatchEvent(new Event('change'));
+    };
+    const name = document.createElement('strong');
+    name.textContent = title;
+    label.append(radio, name);
+    const info = document.createElement('p');
+    info.textContent = description;
+    card.append(label, info);
+    const groups = ruleBundle?.presets[key]?.groups;
+    if (groups) {
+      const details = document.createElement('details');
+      details.dataset.rule = key;
+      details.open = opened.has(key);
+      const summary = document.createElement('summary');
+      summary.textContent = '查看 ' + groups.length + ' 个策略组';
+      const list = document.createElement('p');
+      list.textContent = groups.map(group => group[0]).join(' · ');
+      details.append(summary, list);
+      card.append(details);
+    }
+    return card;
+  }));
+}
+
+$('rules').onchange = async () => {
+  status('rules-status', '');
+  renderOutput();
+  renderRuleCards();
+  if ($('rules').value === 'standard' || ruleBundle) return;
+  status('rules-status', '正在加载规则…');
   try {
-    preset = await rulesRequest;
-    if ($('rules').value === 'acl') status('rules-status', '规则已加载');
+    await loadRuleBundle();
+    status('rules-status', '');
+    renderRuleCards();
     renderOutput();
   } catch {
-    rulesRequest = undefined;
-    if ($('rules').value !== 'acl') return;
+    if ($('rules').value === 'standard') return;
     $('rules').value = 'standard';
+    renderRuleCards();
     renderOutput();
     status('rules-status', '未能加载规则，已恢复基础分流', true);
   }
 };
 
-$('format').onchange = refresh;
+for (const button of document.querySelectorAll('[data-page]')) {
+  button.onclick = async () => {
+    for (const option of document.querySelectorAll('[data-page]')) {
+      if (option === button) option.setAttribute('aria-current', 'page');
+      else option.removeAttribute('aria-current');
+    }
+    for (const panel of document.querySelectorAll('[data-panel]')) panel.hidden = panel.dataset.panel !== button.dataset.page;
+    if (button.dataset.page === 'rules') {
+      renderRuleCards();
+      try { await loadRuleBundle(); renderRuleCards(); }
+      catch { status('rules-status', '规则文件暂时无法读取', true); }
+    }
+  };
+}
+
+const clients = [
+  ['clash', 'Clash / Mihomo', '≋', ['clash', 'provider']],
+  ['base64', 'Shadowrocket', '↗', ['base64', 'links']],
+  ['surge', 'Surge', 'ϟ', ['surge']],
+  ['loon', 'Loon', '◈', ['loon']],
+  ['quanx', 'Quantumult X', '×', ['quanx']],
+];
+
+function pickClient() {
+  for (const [index, button] of [...$('client-picker').children].entries()) {
+    button.setAttribute('aria-pressed', String(clients[index][3].includes($('format').value)));
+  }
+}
+for (const [format, title, symbol] of clients) {
+  const button = document.createElement('button');
+  const glyph = document.createElement('span');
+  glyph.textContent = symbol;
+  glyph.setAttribute('aria-hidden', 'true');
+  button.append(glyph, document.createTextNode(title));
+  button.onclick = () => { $('format').value = format; $('format').dispatchEvent(new Event('change')); };
+  $('client-picker').append(button);
+}
+pickClient();
+
+$('format').onchange = () => { pickClient(); refresh(); };
 $('prefix').oninput = refresh;
 $('split').onchange = renderOutput;
 $('copy').onclick = async () => {
