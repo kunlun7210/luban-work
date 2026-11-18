@@ -804,7 +804,7 @@
   }
 
   /* ===================== YAML 序列化 ===================== */
-  function nodesToYaml(nodes, opt) {
+  function nodesToConfig(nodes, opt) {
     var config = { proxies: nodes };
     if (!opt || opt.fullConfig !== false) {
       config['mixed-port'] = 7890;
@@ -817,7 +817,11 @@
       config['proxy-groups'] = [{ name: group, type: 'select', proxies: nodes.map(function (n) { return n.name; }).concat('DIRECT') }];
       config.rules = ['MATCH,' + group];
     }
-    return yaml.dump(config);
+    return config;
+  }
+
+  function nodesToYaml(nodes, opt) {
+    return yaml.dump(nodesToConfig(nodes, opt));
   }
 
   /**
@@ -895,6 +899,7 @@
     urisToYaml: urisToYaml,
     uriToNode: uriToNode,
     nodesToYaml: nodesToYaml,
+    nodesToConfig: nodesToConfig,
     nodeToUri: nodeToUri,
     parseUri: parseUri,
     base64DecodeToString: base64DecodeToString,

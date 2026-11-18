@@ -6,6 +6,10 @@
 
 计算、密码、OCR、媒体转换和编辑等功能在浏览器中处理输入。短网址通过 is.gd 生成，翻译通过 MyMemory，参考汇率来自 Frankfurter，以图搜番使用 trace.moe。页面会标注输入发往哪个服务。ICP备案和测速使用官方查询入口；Bilibili 接口无法直接查询时，可以从用户粘贴的网页元数据中提取封面。
 
+## 订阅转换
+
+支持粘贴节点链接、Base64 或 Clash YAML，亦可选择本地文件。在 [订阅转换](https://kunlun7210.github.io/luban-work/tool/subscription-converter/) 中筛选节点后，可导出 Mihomo 完整配置或节点列表、小火箭分享链接或 Base64，以及 Surge、Loon、Quantumult X 的节点条目。订阅网址由浏览器向源站读取，受源站跨域设置限制。格式参考 [Tower](https://github.com/pengchujin/tower)，相关部分适用 [MIT 许可](tool/subscription-converter/TOWER-LICENSE.txt)。
+
 ## 开发
 
 - `index.html` 与 `assets/` 提供首页、工具目录和浏览器端基础工具。

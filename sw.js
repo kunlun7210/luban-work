@@ -1,17 +1,20 @@
 const prefix = 'luban-work-shell-';
-const cacheName = prefix + 'v4';
+const cacheName = prefix + 'v5';
 const scope = self.registration.scope;
 const assets = [
   './', 'index.html', 'register.js', 'assets/site.css', 'assets/home.mjs',
   'assets/catalog.json', 'assets/toolbox-classic.svg', 'tools/', 'tools/index.html', 'tools/styles.css',
   'tools/pdf/', 'tools/pdf/index.html', 'tools/pdf/pdf.css', 'tools/pdf/pdf.js', 'tools/pdf/pdf-worker.js',
   'tools/codes.js', 'tools/subscriptions.js', 'tools/app.js', 'tools/vendor/js-yaml.umd.min.js',
+  'tool/subscription-converter/', 'tool/subscription-converter/index.html',
+  'tool/subscription-converter/subscription.css', 'tool/subscription-converter/subscription.mjs',
+  'tool/subscription-converter/converter.mjs', 'tool/subscription-converter/TOWER-LICENSE.txt',
 ].map(path => new URL(path, scope).href);
 const assetSet = new Set(assets);
 const pdfEngine = new Set(['qpdf.js', 'qpdf.wasm'].map(
   file => new URL('tools/pdf/vendor/qpdf-wasm-0.3.1/' + file, scope).href,
 ));
-const directoryRoutes = new Set(['tools', 'tools/pdf'].map(path => new URL(path, scope).href));
+const directoryRoutes = new Set(['tools', 'tools/pdf', 'tool/subscription-converter'].map(path => new URL(path, scope).href));
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
