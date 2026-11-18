@@ -1,3 +1,5 @@
+import { applyRulePreset } from './rules.mjs';
+
 // Client syntax adapted from Tower's ConfigurationGenerator.swift (MIT).
 // https://github.com/pengchujin/tower/tree/873f854
 export const maxBytes = 8 * 1024 * 1024;
@@ -275,7 +277,7 @@ function clientLine(node, target) {
 const mihomoTypes = new Set(['ss', 'ssr', 'vmess', 'vless', 'trojan', 'hysteria', 'hysteria2', 'tuic', 'snell',
   'socks5', 'http', 'anytls', 'wireguard', 'ssh']);
 export function exportNodes(rows, options, engine) {
-  const { format, prefix = '', selected, split } = options;
+  const { format, prefix = '', selected, split, preset } = options;
   const names = new Set(reserved);
   const results = [];
   const nodes = [], lines = [];
@@ -307,10 +309,12 @@ export function exportNodes(rows, options, engine) {
   }
 
   let text = '';
+  let ruleStats;
   if (nodes.length && (format === 'clash' || format === 'provider')) {
     const config = engine.nodesToConfig(nodes, { fullConfig: format === 'clash' });
     if (format === 'clash') {
-      if (split) config.rules.unshift(
+      if (preset) ruleStats = applyRulePreset(config, preset);
+      else if (split) config.rules.unshift(
         'DOMAIN-SUFFIX,local,DIRECT', 'DOMAIN-SUFFIX,lan,DIRECT', 'DOMAIN-SUFFIX,cn,DIRECT',
         'IP-CIDR,10.0.0.0/8,DIRECT,no-resolve', 'IP-CIDR,127.0.0.0/8,DIRECT,no-resolve',
         'IP-CIDR,172.16.0.0/12,DIRECT,no-resolve', 'IP-CIDR,192.168.0.0/16,DIRECT,no-resolve',
@@ -322,5 +326,5 @@ export function exportNodes(rows, options, engine) {
   } else if (lines.length) {
     text = format === 'base64' ? engine.b64utf8(lines.join('\n')) : lines.join('\n') + '\n';
   }
-  return { text, results, ok: nodes.length };
+  return { text, results, ok: nodes.length, ruleStats };
 }

@@ -16,8 +16,12 @@ let selected = new Set();
 let compatibility = [];
 let currentRead;
 let revision = 0;
+let preset;
+let rulesRequest;
+const savedKey = 'luban.subscription.sources.v1';
+const sourceSelection = new Set();
 const engine = () => globalThis.LubanClash;
-const options = () => ({ format: $('format').value, prefix: $('prefix').value, split: $('split').checked });
+const options = () => ({ format: $('format').value, prefix: $('prefix').value, split: $('split').checked, preset: $('rules').value === 'acl' ? preset : undefined });
 
 function status(id, message, isError = false) {
   $(id).textContent = message;
@@ -72,8 +76,15 @@ function renderList() {
 function renderOutput() {
   const settings = options();
   $('format-help').textContent = formats[settings.format][1];
-  $('split-row').hidden = settings.format !== 'clash';
-  const result = exportNodes(rows, { ...settings, selected }, engine());
+  const isClash = settings.format === 'clash';
+  $('rules-row').hidden = !isClash;
+  $('split-row').hidden = !isClash || $('rules').value === 'acl';
+  const waitingForRules = isClash && $('rules').value === 'acl' && !preset;
+  const result = waitingForRules ? { text: '', ok: 0 } : exportNodes(rows, { ...settings, selected }, engine());
+  if (result.ruleStats) {
+    const { count, skipped } = result.ruleStats;
+    status('rules-status', count + ' 条分流规则' + (skipped ? ' · 跳过 ' + skipped + ' 条不兼容规则' : ''));
+  }
   const skipped = compatibility.filter(row => row.error).length;
   $('result').value = result.text;
   $('download').disabled = $('copy').disabled = !result.text;
@@ -84,7 +95,7 @@ function renderOutput() {
 }
 
 function refresh() {
-  compatibility = exportNodes(rows, options(), engine()).results;
+  compatibility = exportNodes(rows, { ...options(), preset: undefined }, engine()).results;
   renderList();
   renderOutput();
 }
@@ -252,6 +263,122 @@ for (const [id, checked] of [['select-visible', true], ['deselect-visible', fals
     renderOutput();
   };
 }
+function readSaved() {
+  return JSON.parse(localStorage.getItem(savedKey) || '[]');
+}
+
+function renderSaved() {
+  const list = $('saved-list');
+  const fragment = document.createDocumentFragment();
+  const entries = readSaved();
+  for (const entry of entries) {
+    const item = document.createElement('li');
+    const label = document.createElement('label');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = sourceSelection.has(entry.id);
+    checkbox.onchange = () => {
+      if (checkbox.checked) sourceSelection.add(entry.id);
+      else sourceSelection.delete(entry.id);
+      $('combine-sources').disabled = !sourceSelection.size;
+    };
+    const name = document.createElement('span');
+    name.textContent = entry.name;
+    label.append(checkbox, name);
+    const remove = document.createElement('button');
+    remove.textContent = '删除';
+    remove.type = 'button';
+    remove.setAttribute('aria-label', '删除订阅 ' + entry.name);
+    remove.onclick = () => {
+      try {
+        localStorage.setItem(savedKey, JSON.stringify(readSaved().filter(saved => saved.id !== entry.id)));
+        sourceSelection.delete(entry.id);
+        renderSaved();
+        status('saved-status', '已删除');
+      } catch { status('saved-status', '无法写入浏览器存储', true); }
+    };
+    item.append(label, remove);
+    fragment.append(item);
+  }
+  const ids = new Set(entries.map(entry => entry.id));
+  for (const id of sourceSelection) if (!ids.has(id)) sourceSelection.delete(id);
+  list.replaceChildren(fragment);
+  list.hidden = !entries.length;
+  $('combine-sources').disabled = !sourceSelection.size;
+}
+
+$('save-source').onclick = () => {
+  const name = $('saved-name').value.trim();
+  if (!name) {
+    $('saved-name').focus();
+    return status('saved-status', '请填写订阅名称', true);
+  }
+  try {
+    const imported = readSubscription(source.value, engine());
+    if (!imported.some(row => row.node)) throw new Error('当前内容没有可保存的节点');
+    const id = crypto.randomUUID();
+    localStorage.setItem(savedKey, JSON.stringify([...readSaved(), { id, name, content: source.value }]));
+    sourceSelection.add(id);
+    $('saved-name').value = '';
+    renderSaved();
+    status('saved-status', '已保存到当前浏览器');
+  } catch (error) {
+    status('saved-status', error.name === 'QuotaExceededError' ? '浏览器存储空间不足' : error.message, true);
+  }
+};
+
+$('combine-sources').onclick = () => {
+  try {
+    const entries = readSaved().filter(entry => sourceSelection.has(entry.id));
+    if (!entries.length) return;
+    const encoder = new TextEncoder();
+    const combinedSize = entries.reduce((sum, entry) => sum + encoder.encode(entry.content).length, 0);
+    if (combinedSize > maxBytes) throw new Error('所选订阅合计超过 8 MB');
+    const combined = entries.flatMap(entry => readSubscription(entry.content, engine()).map(row => ({
+      ...row, label: row.error ? entry.name + ' · ' + row.label : row.label,
+    })));
+    if (combined.length > 5000) throw new Error('单次最多加载 5000 个节点');
+    cancelRead();
+    source.value = '';
+    rows = combined.map((row, id) => ({ ...row, id }));
+    selected = new Set(rows.filter(row => row.node).map(row => row.id));
+    $('node-search').value = '';
+    status('source-status', '');
+    status('saved-status', '已加载 ' + entries.length + ' 个订阅');
+    refresh();
+  } catch (error) { status('saved-status', error.message, true); }
+};
+
+try { renderSaved(); }
+catch { status('saved-status', '当前浏览器无法读取已保存的订阅', true); }
+window.addEventListener('storage', event => {
+  if (event.key !== savedKey && event.key !== null) return;
+  try { renderSaved(); }
+  catch { status('saved-status', '当前浏览器无法读取已保存的订阅', true); }
+});
+
+$('rules').onchange = async () => {
+  status('rules-status', '');
+  renderOutput();
+  if ($('rules').value !== 'acl' || preset) return;
+  status('rules-status', '正在加载规则…');
+  rulesRequest ||= fetch(new URL('acl4ssr-mini.json', import.meta.url)).then(response => {
+    if (!response.ok) throw new Error();
+    return response.json();
+  });
+  try {
+    preset = await rulesRequest;
+    if ($('rules').value === 'acl') status('rules-status', '规则已加载');
+    renderOutput();
+  } catch {
+    rulesRequest = undefined;
+    if ($('rules').value !== 'acl') return;
+    $('rules').value = 'standard';
+    renderOutput();
+    status('rules-status', '未能加载规则，已恢复基础分流', true);
+  }
+};
+
 $('format').onchange = refresh;
 $('prefix').oninput = refresh;
 $('split').onchange = renderOutput;

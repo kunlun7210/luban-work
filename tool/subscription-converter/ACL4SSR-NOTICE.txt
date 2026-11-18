@@ -1,0 +1,24 @@
+Source snapshot: https://github.com/pengchujin/tower/tree/873f854/Tower/Resources/ACL4SSR
+Changes: packaged the list files as JSON and mapped routing labels to DIRECT, REJECT or the selected proxy group.
+
+ACL4SSR rules
+=============
+
+Source:      ACL4SSR/ACL4SSR
+Source URL:  https://github.com/ACL4SSR/ACL4SSR
+Revision:    e2f257307bf0ee31921ac948036e942a29a35b35
+License:     CC BY-SA 4.0
+             https://creativecommons.org/licenses/by-sa/4.0/
+
+Bundled here: the ACL4SSR_Online, ACL4SSR_Online_Mini and ACL4SSR_Online_Full
+remote configs, plus every .list rule file they reference.
+
+ACL4SSR_manifest.json also records Tower-generated MRS and SRS derivatives and
+Loon, Quantumult X and Egern rule lists for the losslessly convertible rules.
+They live under the repository's Rulesets/ directory for compatible clients, not
+bundled inside the Tower app. Rules without such a representation stay inline.
+
+Modifications: none to the rule contents. Every file carries an "ACL4SSR_"
+prefix because Xcode flattens resources into the bundle root; this keeps their
+origin explicit and avoids future filename collisions. The configs' "master"
+URLs were rewritten to the pinned revision above so the snapshot is reproducible.

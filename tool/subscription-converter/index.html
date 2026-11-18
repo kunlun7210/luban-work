@@ -47,6 +47,20 @@
         </div>
       </section>
 
+      <section class="subscription-panel" aria-labelledby="saved-title">
+        <h2 id="saved-title">我的订阅</h2>
+        <p>保存后保留在当前浏览器，可勾选多个订阅一起导出。</p>
+        <label for="saved-name">订阅名称</label>
+        <div class="subscription-row subscription-url">
+          <input id="saved-name" maxlength="80" autocomplete="off" placeholder="例如 家用订阅">
+          <button id="save-source" type="button">保存当前内容</button>
+        </div>
+        <ul id="saved-list" class="subscription-nodes" aria-label="已保存订阅" hidden></ul>
+        <div class="subscription-row">
+          <button id="combine-sources" type="button" disabled>加载所选订阅</button>
+          <span id="saved-status" class="subscription-status" role="status"></span>
+        </div>
+      </section>
       <section class="subscription-panel" aria-labelledby="nodes-title">
         <h2 id="nodes-title">选择节点</h2>
         <p id="node-status" class="subscription-status" role="status">解析后显示节点和兼容性。</p>
@@ -77,6 +91,14 @@
       <p id="format-help"></p>
       <label for="prefix">节点名称前缀（可选）</label>
       <input id="prefix" maxlength="60" autocomplete="off" placeholder="例如 SG-">
+      <div id="rules-row" class="subscription-rules">
+        <label for="rules">规则方案</label>
+        <select id="rules">
+          <option value="standard">基础分流</option>
+          <option value="acl">ACL4SSR Mini</option>
+        </select>
+        <small id="rules-status" class="subscription-status" role="status"></small>
+      </div>
       <label id="split-row" class="subscription-check">
         <input type="checkbox" id="split" checked> 中国大陆和局域网直连
       </label>
@@ -89,8 +111,8 @@
       </div>
     </section>
   </div>
-  <footer class="subscription-footer">订阅凭据仅在当前页面处理。
-    格式参考 <a href="https://github.com/pengchujin/tower" target="_blank" rel="noopener noreferrer">Tower</a> · <a href="./TOWER-LICENSE.txt">MIT 许可</a>
+  <footer class="subscription-footer">订阅凭据由浏览器处理。
+    格式参考 <a href="https://github.com/pengchujin/tower" target="_blank" rel="noopener noreferrer">Tower</a> · <a href="./TOWER-LICENSE.txt">MIT 许可</a> · <a href="./ACL4SSR-NOTICE.txt">ACL4SSR 规则来源</a>
   </footer>
 </main>
 <script type="module" src="./subscription.mjs"></script>
