@@ -1,5 +1,5 @@
 const prefix = 'luban-work-shell-';
-const cacheName = prefix + 'v5';
+const cacheName = prefix + 'v6';
 const scope = self.registration.scope;
 const assets = [
   './', 'index.html', 'register.js', 'assets/site.css', 'assets/home.mjs',

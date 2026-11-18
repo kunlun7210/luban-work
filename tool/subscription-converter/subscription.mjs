@@ -274,3 +274,6 @@ $('download').onclick = () => {
 };
 
 refresh();
+const workspace = document.querySelector('.subscription-grid');
+workspace.inert = false;
+workspace.removeAttribute('aria-busy');
